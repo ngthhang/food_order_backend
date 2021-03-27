@@ -1,43 +1,41 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('customer_promo', {
-    CUSTOMER_ID: {
+  return sequelize.define('image_dish', {
+    IMG_ID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true
+    },
+    DISH_ID: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'customer',
-        key: 'CUSTOMER_ID'
+        model: 'dish',
+        key: 'DISH_ID'
       }
     },
-    PROMO_ID: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'promo',
-        key: 'PROMO_ID'
-      }
-    },
-    USED: {
-      type: DataTypes.TINYINT,
+    SRC: {
+      type: DataTypes.STRING(500),
       allowNull: false
     }
   }, {
     sequelize,
-    tableName: 'customer_promo',
+    tableName: 'image_dish',
     timestamps: false,
     indexes: [
       {
-        name: "FK_CUSTOMER_ID",
+        name: "PRIMARY",
+        unique: true,
         using: "BTREE",
         fields: [
-          { name: "CUSTOMER_ID" },
+          { name: "IMG_ID" },
         ]
       },
       {
-        name: "FK_POSITION_ID1",
+        name: "FK_DISH_ID3",
         using: "BTREE",
         fields: [
-          { name: "PROMO_ID" },
+          { name: "DISH_ID" },
         ]
       },
     ]

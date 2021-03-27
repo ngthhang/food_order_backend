@@ -1,30 +1,51 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('orders', {
-    ID_ORDER: {
-      type: DataTypes.TINYINT,
-      allowNull: true,
+    ORDER_ID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
       primaryKey: true
     },
-    ID_TABLE: {
-      type: DataTypes.SMALLINT,
-      allowNull: true
+    TABLE_ID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'tables',
+        key: 'TABLE_ID'
+      }
     },
     CREATED_AT: {
-      type: DataTypes.STRING(19),
-      allowNull: true
+      type: DataTypes.DATE,
+      allowNull: false
     },
     UPDATED_AT: {
-      type: DataTypes.STRING(0),
+      type: DataTypes.DATE,
       allowNull: true
     },
-    STATUSS: {
-      type: DataTypes.TINYINT,
-      allowNull: true
+    STATUS: {
+      type: DataTypes.STRING(100),
+      allowNull: false
     }
   }, {
     sequelize,
     tableName: 'orders',
-    timestamps: false
+    timestamps: false,
+    indexes: [
+      {
+        name: "PRIMARY",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "ORDER_ID" },
+        ]
+      },
+      {
+        name: "FK_ORDER_ID",
+        using: "BTREE",
+        fields: [
+          { name: "TABLE_ID" },
+        ]
+      },
+    ]
   });
 };

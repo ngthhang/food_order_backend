@@ -1,26 +1,36 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('customer', {
-    ID_CUSTOMER: {
-      type: DataTypes.TINYINT,
-      allowNull: true,
+    CUSTOMER_ID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
       primaryKey: true
     },
-    NAMES: {
-      type: DataTypes.STRING(23),
-      allowNull: true
+    NAME: {
+      type: DataTypes.STRING(100),
+      allowNull: false
     },
     PHONE: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.STRING(10),
       allowNull: true
     },
-    VISITED_AT: {
-      type: DataTypes.STRING(19),
-      allowNull: true
+    VISITED: {
+      type: DataTypes.INTEGER,
+      allowNull: false
     }
   }, {
     sequelize,
     tableName: 'customer',
-    timestamps: false
+    timestamps: false,
+    indexes: [
+      {
+        name: "PRIMARY",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "CUSTOMER_ID" },
+        ]
+      },
+    ]
   });
 };

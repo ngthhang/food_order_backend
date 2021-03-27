@@ -1,54 +1,97 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('invoice', {
-    ID_INVOICE: {
-      type: DataTypes.TINYINT,
-      allowNull: true,
+    INVOICE_ID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
       primaryKey: true
     },
     CREATED_AT: {
-      type: DataTypes.STRING(19),
-      allowNull: true
+      type: DataTypes.DATE,
+      allowNull: false
     },
-    ID_TABLE: {
-      type: DataTypes.SMALLINT,
-      allowNull: true
+    TABLE_ID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'tables',
+        key: 'TABLE_ID'
+      }
     },
-    ID_STAFF: {
-      type: DataTypes.SMALLINT,
-      allowNull: true
-    },
-    ID_PROMO: {
-      type: DataTypes.STRING(1),
-      allowNull: true
+    PROMO_ID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'promo',
+        key: 'PROMO_ID'
+      }
     },
     TAX: {
-      type: DataTypes.DECIMAL(2,1),
-      allowNull: true
-    },
-    DISCOUNT: {
-      type: DataTypes.STRING(3),
-      allowNull: true
+      type: DataTypes.FLOAT,
+      allowNull: false
     },
     TOTAL_PRICE: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: false
     },
     NET_PRICE: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: false
     },
-    MONEY_RECEICED: {
+    MONEY_RECEIVED: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: false
     },
     MONEY_CHANGE: {
-      type: DataTypes.MEDIUMINT,
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    STAFF_ID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'staff',
+        key: 'STAFF_ID'
+      }
+    },
+    CUSTOMER_ID: {
+      type: DataTypes.INTEGER,
       allowNull: true
     }
   }, {
     sequelize,
     tableName: 'invoice',
-    timestamps: false
+    timestamps: false,
+    indexes: [
+      {
+        name: "PRIMARY",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "INVOICE_ID" },
+        ]
+      },
+      {
+        name: "FK_TABLE_ID2",
+        using: "BTREE",
+        fields: [
+          { name: "TABLE_ID" },
+        ]
+      },
+      {
+        name: "FK_PROMO_ID2",
+        using: "BTREE",
+        fields: [
+          { name: "PROMO_ID" },
+        ]
+      },
+      {
+        name: "FK_STAFF_ID3",
+        using: "BTREE",
+        fields: [
+          { name: "STAFF_ID" },
+        ]
+      },
+    ]
   });
 };

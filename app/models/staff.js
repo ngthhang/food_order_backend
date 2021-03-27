@@ -1,42 +1,59 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('staff', {
-    ID_STAFF: {
-      type: DataTypes.SMALLINT,
-      allowNull: true,
+    STAFF_ID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
       primaryKey: true
     },
     NAME_STAFF: {
-      type: DataTypes.STRING(16),
-      allowNull: true
+      type: DataTypes.STRING(100),
+      allowNull: false
     },
     PHONE: {
-      type: DataTypes.BIGINT,
-      allowNull: true
+      type: DataTypes.STRING(10),
+      allowNull: false
     },
     EMAIL: {
-      type: DataTypes.STRING(24),
-      allowNull: true
+      type: DataTypes.STRING(100),
+      allowNull: false
     },
     USERNAME: {
-      type: DataTypes.STRING(18),
-      allowNull: true
+      type: DataTypes.STRING(100),
+      allowNull: false
     },
-    PASSWORDS: {
-      type: DataTypes.STRING(20),
-      allowNull: true
+    PASSWORD: {
+      type: DataTypes.STRING(100),
+      allowNull: false
     },
-    ID_POSITION: {
-      type: DataTypes.TINYINT,
-      allowNull: true
-    },
-    REGISTERED_AT: {
-      type: DataTypes.STRING(19),
-      allowNull: true
+    POSITION_ID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'position',
+        key: 'POSITION_ID'
+      }
     }
   }, {
     sequelize,
     tableName: 'staff',
-    timestamps: false
+    timestamps: false,
+    indexes: [
+      {
+        name: "PRIMARY",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "STAFF_ID" },
+        ]
+      },
+      {
+        name: "FK_POSITION_ID",
+        using: "BTREE",
+        fields: [
+          { name: "POSITION_ID" },
+        ]
+      },
+    ]
   });
 };

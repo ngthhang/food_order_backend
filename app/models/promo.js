@@ -1,38 +1,48 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('promo', {
-    ID_PROMO: {
-      type: DataTypes.TINYINT,
-      allowNull: true,
+    PROMO_ID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
       primaryKey: true
     },
-    NAMES: {
-      type: DataTypes.STRING(38),
+    NAME: {
+      type: DataTypes.STRING(100),
       allowNull: true
     },
-    PERCENTS: {
-      type: DataTypes.DECIMAL(3,1),
+    PERCENT: {
+      type: DataTypes.FLOAT,
       allowNull: true
     },
-    MIN_PRICE: {
+    MINIMUM_PRICE: {
       type: DataTypes.INTEGER,
       allowNull: true
     },
     PRE_CONDITION: {
-      type: DataTypes.TINYINT,
+      type: DataTypes.INTEGER,
       allowNull: true
     },
     EXPIRED: {
-      type: DataTypes.STRING(19),
+      type: DataTypes.DATE,
       allowNull: true
     },
     AVAIABLE: {
-      type: DataTypes.TINYINT,
+      type: "BIT(2)",
       allowNull: true
     }
   }, {
     sequelize,
     tableName: 'promo',
-    timestamps: false
+    timestamps: false,
+    indexes: [
+      {
+        name: "PRIMARY",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "PROMO_ID" },
+        ]
+      },
+    ]
   });
 };

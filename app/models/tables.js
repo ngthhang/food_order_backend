@@ -1,26 +1,36 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('tables', {
-    ID_TABLE: {
-      type: DataTypes.SMALLINT,
-      allowNull: true,
+    TABLE_ID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
       primaryKey: true
     },
-    FLOOR_NUMBER: {
-      type: DataTypes.STRING(5),
-      allowNull: true
+    FLOOR: {
+      type: DataTypes.INTEGER,
+      allowNull: false
     },
-    PEOPLE_NUMBER: {
-      type: DataTypes.TINYINT,
-      allowNull: true
+    NUM_PEOPLE: {
+      type: DataTypes.INTEGER,
+      allowNull: false
     },
-    STATUSS: {
-      type: DataTypes.TINYINT,
-      allowNull: true
+    STATUS: {
+      type: "BIT(2)",
+      allowNull: false
     }
   }, {
     sequelize,
     tableName: 'tables',
-    timestamps: false
+    timestamps: false,
+    indexes: [
+      {
+        name: "PRIMARY",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "TABLE_ID" },
+        ]
+      },
+    ]
   });
 };

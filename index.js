@@ -2,12 +2,13 @@ const express = require("express");
 const cors = require("cors");
 const dbConnect = require("./app/dbConnection");
 const initModels = require('./app/models/init-models');
+const sequelize = require('sequelize');
 
 const main = async () => {
   const app = express();
   
   var corsOptions = {
-    origin: "https://localhost:8081",
+    origin: "http://localhost:3000",
   };
 
   app.use(cors(corsOptions));
@@ -23,21 +24,65 @@ const main = async () => {
   await database.sequelize.authenticate();
 
   const models = database.models;
-  const Customer = models.customer;
-  const Dish = models.dish;
-  const Staff = models.staff;
-  const Images = models.images;
-  const Invoice = models.invoice;
-  const InvoiceDetail = models.invoice_detail;
-  const Promo = models.promo;
-  const Tables = models.tables;
-  const TypeOfDish = models.type_of_dish;
 
 
-  //route
-  app.get("/customer/:id?", async (req, res) => {
-  // console.log("customer: " + JSON.stringify(customers));
+  //route dish
+  app.get("/dish", async (req, res) => {
+    res.json(await models.dish.findAll());
   });
+
+  app.get("/dish/:type", async (req, res) => {
+    res.json(await models.dish.findAll({ where: {TYPE_ID: req.params.type}}));
+  });
+
+  app.get("/dish_img", async (req, res) => {
+    let img = await models.image_dish.findAll();
+    res.json(img);
+  })
+
+  app.get("/dish_recommend", async (req, res) => {
+    res.json(await models.recommend_dish.findAll());
+  })
+
+  // route order
+  app.post("/order",async (req, res) => {
+    const data = req.body;
+    console.log(data);
+    const table = data.table;
+    const currentDishes = data.currentDishes;
+    const orders = models.orders;
+    const orderDetail = models.order_detail;
+    let maxOrderId =await orders.findAll({
+      order: [
+        ['ORDER_ID', 'DESC']
+      ],
+      limit: 1
+    })
+    let newIdOrderCreated = maxOrderId[0].toJSON().ORDER_ID + 1;
+
+    await orders.create({
+      ORDER_ID: newIdOrderCreated,
+      TABLE_ID: table,
+      CREATED_AT: new Date(),
+      UPDATED_AT: new Date(),
+      STATUS: "CHƯA THANH TOÁN"
+    })
+
+    for(let dish of currentDishes) {
+      await orderDetail.create({
+        ORDER_ID: newIdOrderCreated,
+        DISH_ID: dish.DISH_ID,
+        QUANTITY: dish.QTY,
+        NOTE: dish.NOTE
+      })
+    }
+    
+    res.json({code: 200, message: "Oke"})
+  })
+
+  app.get('/order', (req, res) =>{
+    
+  })
   
   app.post("/customer", (req, res) => {
 
@@ -52,7 +97,7 @@ const main = async () => {
   })
 
   // set port
-  const port = process.env.PORT || 3000;
+  const port = process.env.PORT || 8000;
   app.listen(port, () => {
     console.log(`Listening on: http://localhost:${port} `);
   });

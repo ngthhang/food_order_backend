@@ -1,46 +1,68 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('dish', {
-    ID_DISH: {
-      type: DataTypes.SMALLINT,
-      allowNull: true,
+    DISH_ID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
       primaryKey: true
     },
-    NAMES: {
-      type: DataTypes.STRING(16),
-      allowNull: true
+    NAME: {
+      type: DataTypes.STRING(100),
+      allowNull: false
     },
-    ID_TYPE: {
-      type: DataTypes.TINYINT,
-      allowNull: true
+    TYPE_ID: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'type_of_dish',
+        key: 'TYPE_ID'
+      }
     },
-    DESCRIPTIONS: {
-      type: DataTypes.STRING(34),
-      allowNull: true
+    DESCRIPTION: {
+      type: DataTypes.STRING(100),
+      allowNull: false
     },
     RATION: {
-      type: DataTypes.TINYINT,
-      allowNull: true
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      comment: "KHẨU PHẦN ĂN BAO NHIEU"
     },
-    STATUSS: {
-      type: DataTypes.TINYINT,
-      allowNull: true
+    STATUS: {
+      type: "BIT(2)",
+      allowNull: false
     },
     PRICE: {
-      type: DataTypes.MEDIUMINT,
-      allowNull: true
+      type: DataTypes.INTEGER,
+      allowNull: false
     },
     DISCOUNT: {
-      type: DataTypes.TINYINT,
-      allowNull: true
+      type: DataTypes.INTEGER,
+      allowNull: false
     },
     TIME_SLOT: {
-      type: DataTypes.STRING(6),
+      type: DataTypes.STRING(100),
       allowNull: true
     }
   }, {
     sequelize,
     tableName: 'dish',
-    timestamps: false
+    timestamps: false,
+    indexes: [
+      {
+        name: "PRIMARY",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "DISH_ID" },
+        ]
+      },
+      {
+        name: "FK_TYPE_OF_DISH",
+        using: "BTREE",
+        fields: [
+          { name: "TYPE_ID" },
+        ]
+      },
+    ]
   });
 };

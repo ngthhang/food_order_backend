@@ -1,10 +1,10 @@
 const databaseConfig = {
-    HOST: 'localhost',
-    USER: '',
+    HOST: '127.0.0.1',
+    USER: 'root',
     PASSWORD: '',
-    PORT: 1433,
-    DB: 'food_ordering',
-    dialect: 'mssql',
+    PORT: 3306,
+    DB: 'food_ordering_system',
+    dialect: 'mysql',
     pool: {
         max: 5,
         min: 0,
