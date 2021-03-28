@@ -3,6 +3,7 @@ const cors = require("cors");
 const dbConnect = require("./app/dbConnection");
 const initModels = require('./app/models/init-models');
 const sequelize = require('sequelize');
+const { Op } = require('sequelize');
 
 const main = async () => {
   const app = express();
@@ -65,7 +66,7 @@ const main = async () => {
       TABLE_ID: table,
       CREATED_AT: new Date(),
       UPDATED_AT: new Date(),
-      STATUS: "CHƯA THANH TOÁN"
+      STATUS: "ĐANG CHẾ BIẾN"
     })
 
     for(let dish of currentDishes) {
@@ -80,21 +81,28 @@ const main = async () => {
     res.json({code: 200, message: "Oke"})
   })
 
-  app.get('/order', (req, res) =>{
-    
-  })
-  
-  app.post("/customer", (req, res) => {
-
-  })
-
-  app.put("/customer", (req, res) => {
-
+  app.get('/order/table/:table',async (req, res) =>{
+    const order = await models.orders.findAll({ where:
+      {
+        TABLE_ID: req.params.table,
+        [Op.or]: [{ STATUS: 'ĐANG CHẾ BIẾN' }, { STATUS: 'CHỜ THANH TOÁN' }],
+      } 
+    })
+    res.json(order)
   })
 
-  app.delete("/customer", (req, res) => {
-
+  app.get('/order_detail/:id' , async (req, res) =>{
+    res.json(await models.order_detail.findAll({where:
+      {ORDER_ID: req.params.id}
+    }))
   })
+
+  app.get("/dish_price/:id", async (req, res) =>{
+    res.json(await models.dish.findAll({where:{
+      DISH_ID: req.params.id
+    }}))
+  })
+
 
   // set port
   const port = process.env.PORT || 8000;
