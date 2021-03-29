@@ -47,6 +47,16 @@ INSERT INTO `customer` (`CUSTOMER_ID`, `NAME`, `PHONE`, `VISITED`) VALUES
 (4, 'Dương Thủy Tiên', '016728645', 8),
 (5, 'Nguyễn Trọng Thông', '0162776930', 8);
 
+
+
+CREATE TABLE `auth` (
+  `AUTH_ID` int(11) NOT NULL,
+  `TOKEN` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `STAFF_ID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `auth`
+  ADD PRIMARY KEY (`AUTH_ID`);
 -- --------------------------------------------------------
 
 --
@@ -359,11 +369,11 @@ CREATE TABLE `staff` (
 --
 
 INSERT INTO `staff` (`STAFF_ID`, `NAME_STAFF`, `PHONE`, `EMAIL`, `USERNAME`, `PASSWORD`, `POSITION_ID`) VALUES
-(1, 'Trần Văn Chín', '0162776930', 'tvchin@gmail.com', 'ADMIN1', '827ccb0eea8a706c4c34a16891f84e7b', 1),
-(2, 'Đỗ Ngọc Ngân', '5669849845', 'dnngan@gmail.com', 'staff2', '827ccb0eea8a706c4c34a16891f84e7b', 2),
-(3, 'Đặng Ngọc Anh', '5974685129', 'dnanh@gmail.com', 'staff3', '827ccb0eea8a706c4c34a16891f84e7b', 3),
-(4, 'Đinh Quốc Dũng', '8596478596', 'dqdung@gmail.com', 'staff4', '827ccb0eea8a706c4c34a16891f84e7b', 4),
-(5, 'Nguyễn Hào Quang', '8956859684', 'nhquang@gmail.com', 'staff5', '827ccb0eea8a706c4c34a16891f84e7b', 5);
+(1, 'Trần Văn Chín', '0162776930', 'tvchin@gmail.com', 'ADMIN1', '$2b$10$AzH8RnEa9/06auG4YrTzR..MHfWzk6aX0y3zeI7N492Na/DorVzxu', 1),
+(2, 'Đỗ Ngọc Ngân', '5669849845', 'dnngan@gmail.com', 'staff2', '$2b$10$AzH8RnEa9/06auG4YrTzR..MHfWzk6aX0y3zeI7N492Na/DorVzxu', 2),
+(3, 'Đặng Ngọc Anh', '5974685129', 'dnanh@gmail.com', 'staff3', '$2b$10$AzH8RnEa9/06auG4YrTzR..MHfWzk6aX0y3zeI7N492Na/DorVzxu', 3),
+(4, 'Đinh Quốc Dũng', '8596478596', 'dqdung@gmail.com', 'staff4', '$2b$10$AzH8RnEa9/06auG4YrTzR..MHfWzk6aX0y3zeI7N492Na/DorVzxu', 4),
+(5, 'Nguyễn Hào Quang', '8956859684', 'nhquang@gmail.com', 'staff5', '$2b$10$AzH8RnEa9/06auG4YrTzR..MHfWzk6aX0y3zeI7N492Na/DorVzxu', 5);
 
 -- --------------------------------------------------------
 

@@ -13,6 +13,7 @@ var _recommend_dish = require("./recommend_dish");
 var _staff = require("./staff");
 var _tables = require("./tables");
 var _type_of_dish = require("./type_of_dish");
+var _auth = require("./auth");
 
 function initModels(sequelize) {
   var customer = _customer(sequelize, DataTypes);
@@ -29,6 +30,7 @@ function initModels(sequelize) {
   var staff = _staff(sequelize, DataTypes);
   var tables = _tables(sequelize, DataTypes);
   var type_of_dish = _type_of_dish(sequelize, DataTypes);
+  var auth = _auth(sequelize, DataTypes);
 
   dish.belongsToMany(orders, { as: 'ORDERs', through: order_detail, foreignKey: "DISH_ID", otherKey: "ORDER_ID" });
   invoice.belongsToMany(orders, { as: 'ORDERs', through: invoice_detail, foreignKey: "INVOICE_ID", otherKey: "ORDER_ID" });
@@ -76,6 +78,7 @@ function initModels(sequelize) {
     promo,
     recommend_dish,
     staff,
+    auth,
     tables,
     type_of_dish,
   };
